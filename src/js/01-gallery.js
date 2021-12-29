@@ -1,3 +1,6 @@
+import SimpleLightbox from 'simpleLightbox'
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 // Add imports above this line
 import { galleryItems } from './gallery-items';
 // Change code below this line
@@ -5,7 +8,6 @@ import { galleryItems } from './gallery-items';
 const galleryContainer = document.querySelector('.gallery');
 
 galleryContainer.insertAdjacentHTML('beforeend', createPhotoGalleryMarkup(galleryItems));
-galleryContainer.addEventListener('click', createModal);
 
 function createPhotoGalleryMarkup () {
         return galleryItems.map(({preview, original, description}) => {
@@ -24,26 +26,10 @@ function createPhotoGalleryMarkup () {
     }).join('');
 }
 
-function createModal (e) {
-    e.preventDefault();
-    if (!e.target.classList.contains('gallery__image')) {
-        return;
-    }
+const lightbox = new SimpleLightbox('.gallery a', { 
+    captionsData: 'alt', 
+    captionDelay: 250, 
+    captionType: 'alt', 
+}); 
 
-    const modal = basicLightbox.create(`
-        <img src="${e.target.dataset.source}" width="800" height="600">
-    `)
-
-    modal.show()
-
-    if (modal.visible()) {
-        window.addEventListener('keydown', onPressKeyESC);
-    }
-
-    function onPressKeyESC(e) {
-        if (e.code === 'Escape') {
-            modal.close();
-            window.removeEventListener('keydown', onPressKeyESC);
-        }
-    }
-}
+console.log(galleryItems);
